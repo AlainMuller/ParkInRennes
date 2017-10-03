@@ -6,28 +6,30 @@ import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import fr.alainmuller.parkinrennes.R
 import fr.alainmuller.parkinrennes.R.layout
+import fr.alainmuller.parkinrennes.domain.commands.RequestParkCommand
 import fr.alainmuller.parkinrennes.ui.widget.adapter.ParkingListAdapter
+import org.jetbrains.anko.doAsync
 import org.jetbrains.anko.find
+import org.jetbrains.anko.longToast
+import org.jetbrains.anko.uiThread
 
 /**
  * Created by Alain Muller on 03/10/2017.
  */
 class MainActivity : AppCompatActivity() {
 
-  private val items = listOf<String>(
-      "Arsenal - 200",
-      "C.Cial Kennedy - 36",
-      "Charles de Gaulle - 89",
-      "Chézy Dinan - 97",
-      "Colombier - 411",
-      "Henri Fréville - 101"
-  )
-
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
     setContentView(layout.activity_main)
     val recyclerView: RecyclerView = find(R.id.main_recyclerview)
     recyclerView.layoutManager = LinearLayoutManager(this)
-    recyclerView.adapter = ParkingListAdapter(items)
+
+    doAsync {
+      val result = RequestParkCommand().execute()
+      uiThread {
+        longToast("ParkRequest performed")
+        recyclerView.adapter = ParkingListAdapter(it, result)
+      }
+    }
   }
 }

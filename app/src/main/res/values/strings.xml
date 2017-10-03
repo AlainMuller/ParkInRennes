@@ -1,3 +1,4 @@
 <resources>
   <string name="app_name">ParkInRennes</string>
+  <string name="main_park_infos">%1$s - (%2$s) %3$d/%4$d</string>
 </resources>
