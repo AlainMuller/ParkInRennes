@@ -23,6 +23,7 @@ class MainActivity : AppCompatActivity() {
     setContentView(layout.activity_main)
     val recyclerView: RecyclerView = find(R.id.main_recyclerview)
     recyclerView.layoutManager = LinearLayoutManager(this)
+    recyclerView.adapter = ParkingListAdapter(this)
 
     doAsync {
       val result = RequestParkCommand().execute()
